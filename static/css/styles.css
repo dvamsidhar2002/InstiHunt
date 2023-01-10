@@ -1,0 +1,259 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200&display=swap');
+.marketing .col-lg-4 {
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.marketing .col-lg-4 p {
+  margin-right: .75rem;
+  margin-left: .75rem;
+}
+
+.searchbar{
+  width: 600px;
+  
+}
+
+/* BASE */
+
+.title-section{
+  font-size: 2rem;
+}
+
+.content-font{
+  font-size: 1.2rem;
+}
+.acc-col{
+  background-color: white !important;
+  color: black !important;
+  font-size: 1.3rem;
+}
+
+/*Scroll back to top*/
+
+#btn-back-to-top {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  display: none;
+}
+
+
+/* END OF BASE*/
+
+.cus{
+  width: 50px;
+  height: 50px;
+}
+
+.row-css{
+  justify-content: space-evenly;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.car-sl{
+  border-radius: 1rem;
+}
+
+
+
+@keyframes shake {
+  0% {
+      transform: translateY(-5px);
+  }
+  50% {
+      transform: translateY(5px);
+  }
+  100% {
+      transform: translateY(-5px);
+  }
+}
+
+.about{
+  padding: 20px;
+  font-size: 20px;
+  font-weight: 1000;
+  margin-left: 20vw;
+  margin-right: 20vw;
+  text-align: justify;
+  font-family: 'Poppins',sans-serif;
+}
+
+
+a{
+  text-decoration: none !important;
+  color: black;
+}
+
+a:hover{
+  color: #5e17eb;
+}
+
+
+
+/* SURVEY */
+
+.text-intro-sur{
+  font-size: 1.4rem;
+}
+
+/* NAV BAR */ 
+
+.font-siz{
+  font-size: 1.2rem;
+}
+
+
+/* ACCORDION CONTENT */
+
+.acc-cont{
+  border-radius: 1rem;
+  padding: 0.75rem;
+  border-color: black;
+  background-color: white !important;
+}
+
+
+
+
+
+
+/* END OF ACCORDION*/
+
+
+/* InstiHunt Logo */
+
+.insti{
+  color: black;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+}
+
+.hunt{
+  color: #005cd8;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+}
+
+
+
+/* Results Page */
+
+
+.results-card{
+  width: 70rem;
+  margin-left: auto;
+  margin-right: auto;
+  border-width: 0.2rem;
+  border-color: grey;
+  /*background-color: #005cd8;*/
+}
+
+.img-col{
+  max-width: 300px;
+  padding: 10px;
+  border-radius: 0.25rem;
+}
+
+.img-result{
+  max-width: 300px;
+  border-radius: 0;
+  padding: 10px;
+}
+
+.ca-ti{
+  white-space: nowrap;
+}
+
+.ca-icon{
+  font-size: 20px;
+  padding-top: 0.5%;
+}
+
+.aboutus{
+  text-align: justify;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.insti{
+  color: black;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+}
+
+.hunt{
+  color: #005cd8;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+}
+
+
+/* End of Results */
+
+
+
+
+
+.survey-img{
+  border-radius: 0.4rem;
+}
+
+.avg-fee{
+  display: grid;
+  grid-template-columns: auto auto;
+}
+
+.entrance-exam{
+  display: grid;
+  grid-template-columns: auto auto auto;
+}
+
+.temp-col{
+  display: grid;
+  grid-template-columns: auto auto auto;
+}
+
+.search-college{
+  display: grid;
+  grid-template-columns: auto auto;
+}
+
+.course-type{
+  display: grid;
+  max-width: 400px;
+  grid-template-columns: auto auto auto;
+}
+
+.type-of-clg{
+  display: grid;
+  max-width: 300px;
+  grid-template-columns: auto auto;
+}
+
+.search-state{
+  display: grid;
+  grid-template-columns: auto auto;  
+}
+
+.state-sel{
+  display: grid;
+  grid-template-columns: auto auto;
+}
+
+.city-sel{
+  display: grid;
+  grid-template-columns: auto auto;
+}
+
+.search-find{
+  max-width: 200px;
+}
+
+
+/* End of Survey */
+
+.body{
+  background-image: url('');
+}

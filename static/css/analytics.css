@@ -1,0 +1,19 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200&display=swap');
+
+*{
+    box-sizing: border-box;
+    margin: 0;
+    text-decoration: none;
+    background-color: #e3f2fd;
+}
+.fixed_charts{
+    display: flex;
+    margin-left: 10vw;
+    margin-right: 10vw;
+    border: 10px strong black;
+    border-radius: 1rem;
+}
+
+.colour{
+    background-color: #e3f2fd;
+}

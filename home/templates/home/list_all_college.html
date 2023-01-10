@@ -1,0 +1,247 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+   <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <title>InstiHunt - Know your Institution</title>
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet"
+         integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+      <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+      <link rel="icon" href="{% static '/images/hat_icon.png' %}" type='image/gif'>
+      <link href="{% static '/css/styles.css' %}" rel="stylesheet">
+      <style>
+         .main-div {
+         display: grid;
+         grid-template-columns: 70% 30%;
+         grid-gap: 10px;
+         }
+         .sec-div {
+         display: grid;
+         grid-template-columns: auto auto auto;
+         }
+         .third-div {
+         display: grid;
+         grid-template-columns: auto auto;
+         }
+      </style>
+   </head>
+   <body>
+      <!--=============== SVG ===============-->
+      <!--=============== NAV BAR ===============-->
+      <div>
+         <header
+            class="container d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3">
+            <a href="{% url 'home_page' %}"
+               class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none">
+            <img src="{% static '/images/logo_footer.png' %}" height="40" width="140">
+            </a>
+            <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+               <li><a href="{% url 'home_page' %}" class="nav-link px-2 link-secondary font-siz">Home</a></li>
+               <li><a href="{% url 'survey_page' %}" class="nav-link px-2 link-dark font-siz">Survey</a></li>
+               <li><a href="{% url 'analytics_page' %}" class="nav-link px-2 link-dark font-siz">Analytics</a></li>
+               <li><a href="#faq" class="nav-link px-2 link-dark font-siz">FAQs</a></li>
+               <li><a href="about.html" class="nav-link px-2 link-dark font-siz">About</a></li>
+            </ul>
+            <div class="col-md-3 text-end">
+               {% if user.is_authenticated %}
+               <button type="button" class="btn btn-outline-primary me-2"
+                  onclick="window.location.href=`{% url 'logout_page' %}`;">
+               Logout
+               </button>
+               {% else %}
+               <button type="button" class="btn btn-outline-primary me-2"
+                  onclick="window.location.href=`{% url 'login_page' %}`;">
+               Login
+               </button>
+               <button type="button" class="btn btn-outline-primary me-2"
+                  onclick="window.location.href=`{% url 'signup_page' %}`;">
+               Sign-up
+               </button>
+               {% endif%}
+            </div>
+         </header>
+      </div>
+      <main class="container">
+         <!--=============== FINAL RESULTS ===============-->
+         <h4 class="ms-5 ps-3 mt-4 mb-4">Top 50 <span style="text-transform: capitalize;">{{ course }}</span> Colleges In India Based On Popularity</h4>
+         <section class="container">
+         </section>
+      </main>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
+         integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
+         crossorigin="anonymous"></script>
+      <script>
+         document.body.style.zoom="95%";
+         //<section class="container pt-4">
+         // Create the main div element
+         
+         
+         let selectDiv=document.getElementsByClassName("container")[2]
+         console.log(selectDiv)
+         const params = {
+         'course': '{{ course }}'
+         };
+         console.log(params)
+         
+         const queryString = Object.keys(params)
+         .map(key => `${key}=${params[key]}`)
+         .join('&');
+         
+         
+         fetch(`http://127.0.0.1:8000/list_all_clgs/?${queryString}`)
+         .then((r) => r.json())
+         .then((response) => {
+         console.log(response)
+         for(let i=0;i<response.length;i++){
+         console.log(response[i])
+         let mainDiv = document.createElement("div");
+         mainDiv.setAttribute("class", "border rounded p-3 mb-2 mx-auto");
+         mainDiv.style.maxWidth = "90%";
+         
+         // Create the inner div element
+         let innerDiv = document.createElement("div");
+         innerDiv.setAttribute("class", "main-div mb-3");
+         
+         // Append the inner div element to the main div element
+         mainDiv.appendChild(innerDiv);
+         
+         // Create the first inner div element
+         let firstInnerDiv = document.createElement("div");
+         
+         // Create the third div element
+         let thirdDiv = document.createElement("div");
+         thirdDiv.setAttribute("class", "third-div d-flex align-items-center");
+         
+         // Create the img element
+         let img = document.createElement("img");
+         img.setAttribute("src", response[i][5]);
+         img.setAttribute("width", "62.5px");
+         img.setAttribute("height", "62.5px");
+         img.setAttribute("class", "pe-2");
+         
+         // Append the img element to the third div element
+         thirdDiv.appendChild(img);
+         
+         // Create the p element
+         let p = document.createElement("p");
+         p.setAttribute("class", "fs-4 ");
+         p.textContent = response[i][0];
+         
+         // Append the p element to the third div element
+         thirdDiv.appendChild(p);
+         
+         // Append the third div element to the first inner div element
+         firstInnerDiv.appendChild(thirdDiv);
+         
+         // Create the second div element
+         let secondDiv = document.createElement("div");
+         secondDiv.setAttribute("class", "d-flex justify-content-between px-1");
+         
+         // Create the first p element
+         let p1 = document.createElement("p");
+         p1.setAttribute("class", "fs-5");
+         p1.textContent = response[i][1]+" , "+response[i][2];
+         
+         // Append the p element to the second div element
+         secondDiv.appendChild(p1);
+         
+         // Create the second p element
+         let p2 = document.createElement("p");
+         p2.setAttribute("class", "fs-5");
+         p2.innerHTML = "<span class=''>Exam: </span>"+response[i][8].toUpperCase();
+         
+         // Append the p element to the second div element
+         secondDiv.appendChild(p2);
+         
+         // Create the third
+         // Create the third p element
+         let p3 = document.createElement("p");
+         p3.setAttribute("class", "fs-5");
+         p3.innerHTML = "<span class=''>Rating: </span><button type='button' class='btn btn-sm btn-success'>"+response[i][4].substring(0, 4)+"</button>";
+         
+         // Append the p element to the second div element
+         secondDiv.appendChild(p3);
+         
+         // Append the second div element to the first inner div element
+         firstInnerDiv.appendChild(secondDiv);
+         
+         // Create the third div element
+         let thirdInnerDiv = document.createElement("div");
+         thirdInnerDiv.setAttribute("class", "d-flex justify-content-between px-1");
+         
+         // Create the fourth p element
+         let p4 = document.createElement("p");
+         p4.setAttribute("class", "fs-5");
+         p4.innerHTML = "<span class=''>Avg Fee: </span>"+response[i][10];
+         
+         // Append the p element to the third div element
+         thirdInnerDiv.appendChild(p4);
+         
+         // Append the p
+         // Create the fifth p element
+         let p5 = document.createElement("p");
+         p5.setAttribute("class", "fs-5");
+         p5.textContent = "Type Of College: "+response[i][11];
+         
+         // Append the p element to the third div element
+         thirdInnerDiv.appendChild(p5);
+         
+         // Create the sixth p element
+         let p6 = document.createElement("p");
+         p6.setAttribute("class", "fs-5");
+         p6.textContent = "Program Type: "+response[i][12];
+         
+         // Append the p element to the third div element
+         thirdInnerDiv.appendChild(p6);
+         
+         // Append the third div element to the first inner div element
+         firstInnerDiv.appendChild(thirdInnerDiv);
+         
+         // Create the fourth div element
+         let fourthDiv = document.createElement("div");
+         fourthDiv.setAttribute("class", "third-div");
+         
+         // Create the seventh p element
+         let p7 = document.createElement("p");
+         p7.setAttribute("class", "fs-5 ");
+         p7.textContent = "Approvals: "+response[i][3];
+         
+         // Append the p element to the fourth div element
+         fourthDiv.appendChild(p7);
+         
+         // Create the eighth p element
+         let p8 = document.createElement("p");
+         p8.setAttribute("class", "fs-5");
+         console.log(response[i][7])
+         p8.innerHTML = "";
+         
+         // Append the p element to the fourth div element
+         fourthDiv.appendChild(p8);
+         
+         // Append the fourth div element to the first inner div element
+         firstInnerDiv.appendChild(fourthDiv);
+         
+         // Append the first inner div element to the inner div element
+         innerDiv.appendChild(firstInnerDiv);
+         
+         // Create the img element
+         let img2 = document.createElement("img");
+         img2.setAttribute("src", response[i][6]);
+         img2.setAttribute("width", "260px");
+         img2.setAttribute("height", "200px");
+         img2.setAttribute("class", "border border-dark");
+         
+         // Append the img element to the inner div element
+         innerDiv.appendChild(img2);
+         
+         // Append the main div element to the body element
+         console.log(mainDiv);
+         selectDiv.appendChild(mainDiv);
+         }
+         })  
+         
+         
+      </script>
+   </body>
+</html>

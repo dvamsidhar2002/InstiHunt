@@ -1,0 +1,590 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+   <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <title>InstiHunt - Know your Institution</title>
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet"
+         integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+      <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+      <link rel="icon" href="{% static '/images/hat_icon.png' %}" type='image/gif'>
+      <link href="{% static '/css/styles.css' %}" rel="stylesheet">
+      <script>
+         var States = {
+           "Andaman and Nicobar Islands": ['Mayabander', 'Port Blair'],
+           "Andhra Pradesh": ['Adoni', 'Amaravathi', 'Anantapur', 'Ananthapur', 'Bapatla', 'Bhimavaram', 'Chirala', 'Chittoor', 'East Godavari', 'Eluru', 'Etcherla', 'Garividi', 'Godavari', 'Guduru', 'Guntur', 'Kadapa', 'Kakinada', 'Kalikiri', 'Krishna', 'Kuppam', 'Kurnool', 'Machilipatnam', 'Madanapalle', 'Murakambattu', 'Nallajerla', 'Narasapuram', 'Narasaraopet', 'Nellore', 'Nidadavole', 'Nuzvid', 'Ongole', 'Pakala', 'Palakoderu', 'Palamaner', 'Prakasam', 'Proddatur', 'Puttaparthy', 'Puttur', 'Rajahmundhry', 'Rajam', 'Rajampet', 'Ramachandrapuram', 'Rapthadu', 'Seetharamapuram', 'Sri City', 'Srikakulam', 'Tadepalligudem', 'Tanuku', 'Tekkali', 'Tirupati', 'Venkatachalam', 'Vijayawada', 'Visakhapatnam', 'Vizianagaram'],
+           "Arunachal Pradesh": ['East Siang', 'Itanagar', 'Lohit', 'Papum Pare', 'Pasighat', 'West Kameng', 'West Siang', 'Ziro'],
+           "Assam": ['Baksa', 'Barpeta', 'Bongaigaon', 'Darrang', 'Dhemaji', 'Dhubri', 'Dibrugarh', 'Dispur', 'Goalpara', 'Golaghat', 'Guwahati', 'Hailakandi', 'Jorhat', 'Kamrup', 'Karimganj', 'Kokrajhar', 'Lakhimpur', 'Marigaon', 'Nagaon', 'Nalbari', 'Pathsala', 'Sibsagar', 'Silchar', 'Sivasagar', 'Sonitpur', 'Tezpur', 'Tinsukia'],
+           "Bihar": ['Araria', 'Arrah', 'Arwal', 'Aurangabad', 'Banka', 'Begusarai', 'Bettiah', 'Bhabua', 'Bhagalpur', 'Bhojpur', 'Buxar', 'Chandi', 'Chapra', 'Darbhanga', 'Gaya', 'Gopalganj', 'Hajipur', 'Harnaut', 'Jehanabad', 'Katihar', 'Madhepura', 'Madhuban', 'Madhubani', 'Motihari', 'Muzaffarpur', 'Nalanda', 'Nawada', 'Patna', 'Purnea', 'Saharsa', 'Samastipur', 'Sasaram', 'Sitamarhi', 'Siwan', 'Supaul', 'Turkaulia', 'Vaishali'],
+           "Chandigarh": ['Chandigarh'],
+           "Chhattisgarh": ['Balod', 'Bastar', 'Bhilai', 'Bilaspur', 'Durg', 'Jashpur', 'Kanker', 'Korba', 'Mahasamund', 'Raigarh', 'Raipur', 'Rajnandgaon', 'Surguja'],
+           "Delhi NCR": ['New Delhi'],
+           "Goa": ['Bardez', 'North Goa', 'Panji', 'Ponda', 'Salcete', 'South Goa', 'Tiswadi'],
+           "Gujarat": ['Ahmedabad', 'Amreli', 'Anand', 'Ankleshwar', 'Banaskantha', 'Bardoli', 'Bharuch', 'Bhavnagar', 'Bhuj', 'Botad', 'Dadra & Nagar Haveli', 'Gandhinagar', 'Godhra', 'Himmatnagar', 'Jamnagar', 'Junagadh', 'Kachchh', 'Kadi', 'Kalol', 'Kheda', 'Mahemdabad', 'Mandvi', 'Matar', 'Mehsana', 'Modasa', 'Morvi', 'Nadiad', 'Navsari', 'Palanpur', 'Panchmahal', 'Patan', 'Porbandar', 'Rajkot', 'Sabarkantha', 'Sidhpur', 'Silvassa', 'Surat', 'Surendra Nagar', 'Vadodara', 'Vallabh Vidyanagar', 'Valsad', 'Vapi', 'Visnagar', 'Wadhwan'],
+           "Haryana": ['Ambala', 'Bahadurgarh', 'Bhiwani', 'Charkhi Dadri', 'Faridabad', 'Fatehabad', 'Gurgaon', 'Hisar', 'Jhajjar', 'Jind', 'Kaithal', 'Karnal', 'Kurukshetra', 'Mahendragarh', 'Mewat', 'Narnaul', 'Nilokheri', 'Palwal', 'Panchkula', 'Panipat', 'Rewari', 'Rohtak', 'Sirsa', 'Sohna', 'Sonepat', 'Yamuna Nagar'],
+           "Himachal Pradesh": ['Baddi', 'Bilaspur', 'Hamirpur', 'Kangra', 'Mandi', 'Palampur', 'Paonta', 'Rampur', 'Shimla', 'Sirmaur', 'Solan', 'Sundarnagar', 'Una'],
+           "Jammu and Kashmir": ['Anantnag', 'Baramulla', 'Doda', 'Jammu', 'Kathua', 'Katra', 'Pulwama', 'Rajauri', 'Srinagar', 'Udhampur'],
+           "Jharkhand": ['Bokaro', 'Chaibasa', 'Chatra', 'Deoghar', 'Dhanbad', 'Dumka', 'Garhwa', 'Hazaribagh', 'Jamshedpur', 'Kodarma', 'Palamu', 'Ramgarh', 'Ranchi', 'Sahibganj'],
+           "Karnataka": ['Ankola', 'Bagalkot', 'Bangalore', 'Bangalore Rural', 'Basavakalyan', 'Belagavi', 'Belgaum', 'Bellary', 'Belthangady', 'Bhalki', 'Bhatkal', 'Bidar', 'Bijapur', 'Chamarajnagar', 'Chickballapur', 'Chikkaballapur', 'Chikmagalur', 'Chikodi', 'Chincholi', 'Chitradurga', 'Dakshin Kannada', 'Davanagere', 'Dharwad', 'Gadag', 'Gulbarga', 'Haliyal', 'Harihar', 'Hassan', 'Haveri', 'Honavar', 'Hospet', 'Hubli', 'Kannada', 'Karwar', 'Kodagu', 'Kolar', 'Mandya', 'Mangalore', 'Manipal', 'Moodbidri', 'Mysore', 'Nelamagala', 'Puttur', 'Raichur', 'Ramanagar', 'Ranibennur', 'Shimoga', 'Sirsi', 'Sullia', 'Surathkal', 'Tiptur', 'Tumkur', 'Udupi', 'Virajpet'],
+           "Kerala": ['Adoor', 'Alappuzha', 'Aluva', 'Calicut', 'Changanacherry', 'Chengannur', 'Cherthala', 'Chittur', 'Ernakulam', 'Idukki', 'Kanjirappally', 'Kannur', 'Karunagapally', 'Kasaragod', 'Kochi', 'Kodungallur', 'Kollam', 'Kothamangalam', 'Kottarakara', 'Kottayam', 'Koyilandi', 'Kozhikode', 'Malappuram', 'Manantahvady', 'Mananthavady', 'Manjeri', 'Mannarkad', 'Mavelikara', 'Muvattupuzha', 'Neyyattinkara', 'Nilambur', 'Ottapalam', 'Ottpalam', 'Palakkad', 'Pathanamthitta', 'Pathanapuram', 'Peermade', 'Perinthalmanna', 'Ponani', 'Sulthan Batheri', 'Taliparamba', 'Thalasery', 'Thiruvalla', 'Thiruvananthapuram', 'Thodupuzha', 'Thrissur', 'Tirur', 'Tirurangadi', 'Tiruvalla', 'Vadakara', 'Wayanad'],
+           "Madhya Pradesh": ['Anuppur', 'Balaghat', 'Barwani', 'Betul', 'Bhind', 'Bhopal', 'Burhanpur', 'Chhatarpur', 'Chhindwara', 'Damoh', 'Datia', 'Dewas', 'Dhar', 'Dindori', 'Guna', 'Gwalior', 'Hoshangabad', 'Indore', 'Jabalpur', 'Katni', 'Khandwa', 'Khargone', 'Mandla', 'Mandsaur', 'Morena', 'Neemuch', 'Panna', 'Ratlam', 'Rewa', 'Sagar', 'Saikheda', 'Satna', 'Sehore', 'Shahdol', 'Shivpuri', 'Tikamgarh', 'Ujjain', 'Umaria', 'Vidisha'],
+           "Maharashtra": ['Ahmadpur', 'Ahmednagar', 'Akola', 'Ambegaon', 'Amravati', 'Aurangabad', 'Badnapur', 'Baramati', 'Barshi', 'Beed', 'Bhandara', 'Bhiwandi', 'Buldhana', 'Chandrapur', 'Chikhli', 'Chiplun', 'Chopda', 'Dhule', 'Gadchiroli', 'Gondiya', 'Goregaon', 'Hingoli', 'Jalgaon', 'Jalna', 'Kalyan', 'Karad', 'Karjat', 'Khalapur', 'Khed', 'Kolhapur', 'Latur', 'Malegaon', 'Malkapur', 'Mumbai', 'Nagpur', 'Naigaon', 'Nanded', 'Nandurbar', 'Nashik', 'Navi Mumbai', 'Osmanabad', 'Palghar', 'Pandharpur', 'Panvel', 'Parbhani', 'Pune', 'Raigarh', 'Ratnagiri', 'Sangli', 'Satara', 'Shegaon', 'Shirpur', 'Sindhudurg', 'Solapur', 'Thane', 'Tuljapur', 'Umarga', 'Umarkhed', 'Wada', 'Wadwani', 'Wardha', 'Washim', 'Yavatmal'],
+           "Manipur": ['Chandel', 'Churachandpur', 'Imphal', 'Thoubal'],
+           "Meghalaya": ['Jaintia Hills', 'Ri-Bhoi', 'Shillong', 'West Garo Hills'],
+           "Mizoram": ['Aizawl', 'Champhai', 'Saiha'],
+           "Nagaland": ['Dimapur', 'Kohima', 'Mokokchung', 'Phek', 'Zunhebotto'],
+           "Orissa": ['Angul', 'Aska', 'Balangir', 'Balasore', 'Baleswar', 'Bargarh', 'Baripada', 'Berhampur', 'Bhadrak', 'Bhawanipatna', 'Bhubaneswar', 'Bolangir', 'Burla', 'Cuttack', 'Dhenkanal', 'Gajapati', 'Ganjam', 'Gunupur', 'Jagatsinghpur', 'Jajapur', 'Jharsuguda', 'Karanjia', 'Kendrapara', 'Kendujhar', 'Khorda', 'Koraput', 'Kuchinda', 'Mayurbhanj', 'Paralkhemundi', 'Phulbani', 'Puri', 'Rayagada', 'Rourkela', 'Sambalpur', 'Sundergarh'],
+           "Puducherry": ['Karaikal', 'Mahe', 'Pondicherry', 'Yanam'],
+           "Punjab": ['Abohar', 'Amritsar', 'Barnala', 'Batala', 'Bathinda', 'Bela', 'Bhikhiwind', 'Dasuya', 'Doraha', 'Faridkot', 'Fatehgarh Sahib', 'Firozpur', 'Gobindgarh', 'Gurdaspur', 'Hoshiarpur', 'Jalandhar', 'Kapurthala', 'Khanna', 'Ludhiana', 'Malout', 'Mansa', 'Moga', 'Mohali', 'Muktsar', 'Nawanshahr', 'Pathankot', 'Patiala', 'Phagwara', 'Rajpura', 'Ropar', 'Rupnagar', 'Sangrur'],
+           "Rajasthan": ['Ajmer', 'Alwar', 'Banswara', 'Bharatpur', 'Bhilwara', 'Bikaner', 'Bundi', 'Chittorgarh', 'Churu', 'Dausa', 'Dungarpur', 'Ganganagar', 'Hanumangarh', 'Jaipur', 'Jhalawar', 'Jhunjhunu', 'Jodhpur', 'Kota', 'Neemrana', 'Pali', 'Pilani', 'Rajsamand', 'Sardarshahr', 'Sawai Madhopur', 'Sikar', 'Sirohi', 'Sriganganagar', 'Tonk', 'Udaipur'],
+           "Sikkim": ['East Sikkim', 'Gangtok', 'South Sikkim'],
+           "Tamil Nadu": ['Ambattur', 'Arcot', 'Ariyalur', 'Arni', 'Aruppukottai', 'Aundipatti', 'Bodinayakanur', 'Chengalpattu', 'Chennai', 'Cheyyur', 'Chidambaram', 'Chinnasalem', 'Coimbatore', 'Cuddalore', 'Devakottai', 'Dharapuram', 'Dharmapuri', 'Dindigul', 'Erode', 'Gobichettipalayam', 'Hosur', 'Ilayangudi', 'Jayamkondacholapuram', 'Kallakurichi', 'Kanchipuram', 'Kanyakumari', 'Karaikudi', 'Kariapatti', 'Karur', 'Katpadi', 'Kovilpatti', 'Krishnagiri', 'Krishnankovil', 'Kumbakonam', 'Madurai', 'Maduranthakam', 'Mayiladuthurai', 'Melur', 'Mettupalayam', 'Mettur', 'Nagapattinam', 'Nagercoil', 'Namakkal', 'Ooty', 'Palani', 'Palayamkottai', 'Palladam', 'Pappiredipatti', 'Pattukkottai', 'Perambalur', 'Periyakulam', 'Perundurai', 'Pollachi', 'Ponneri', 'Poonamallee', 'Pudukkottai', 'Rajapalayam', 'Ramanathapuram', 'Rasipuram', 'Saidapet', 'Salem', 'Sathyamangalam', 'Sivaganga', 'Sivakasi', 'Sriperumbudur', 'Srirangam', 'Tambaram', 'Tenkasi', 'Thanjavur', 'The Nilgiris', 'Theni', 'Thirumangalam', 'Thirunanravur', 'Thiruvallur', 'Thiruvarur', 'Thoothukkudi', 'Thoothukudi', 'Thottiyam', 'Thuraiyur', 'Tindivanam', 'Tiruchendur', 'Tiruchengodu', 'Tiruchirappalli', 'Tirunelveli', 'Tirupattur', 'Tiruppattur', 'Tiruppur', 'Tirutani', 'Tiruvannamalai', 'Tuticorin', 'Udagamandalam', 'Udumalaipettai', 'Uthiramerur', 'Vallam', 'Vandavasi', 'Vaniyambadi', 'Vedaranyam', 'Vellore', 'Villupuram', 'Viluppuram', 'Virudhachalam', 'Virudhunagar'],
+           "Telangana": ['Adilabad', 'Ghatkesar', 'Hanamkonda', 'Hayathnagar', 'Hyderabad', 'Karimnagar', 'Khammam', 'Mahabubnagar', 'Medak', 'Moinabad', 'Nalgonda', 'Nizamabad', 'Palwancha', 'Raikal', 'Rangareddy', 'Sangareddy', 'Secunderabad', 'Siddipet', 'Suryapet', 'Vikarabad', 'Warangal'],
+           "Tripura": ['Agartala', 'Udaipur', 'West Tripura'],
+           "Uttar Pradesh": ['Agra', 'Aligarh', 'Allahabad', 'Ambedkar Nagar', 'Amethi', 'Amroha', 'Auraiya', 'Azamgarh', 'Badaun', 'Bagpat', 'Bahraich', 'Ballia', 'Banda', 'Barabanki', 'Bareilly', 'Bhadohi', 'Bhaghpat', 'Bijnor', 'Bulandshahr', 'Chandausi', 'Chitrakoot', 'Deoria', 'Etah', 'Etawah', 'Faizabad', 'Farrukhabad', 'Fatehpur', 'Firozabad', 'Gangoh', 'Ghaziabad', 'Ghazipur', 'Gonda', 'Gorakhpur', 'Greater Noida', 'Gyanpur', 'Hapur', 'Hardoi', 'Jaunpur', 'Jhansi', 'Jyotiba Phule Nagar', 'Kannauj', 'Kanpur', 'Kanpur Dehat', 'Kaushambi', 'Kheri', 'Lakhimpur', 'Lucknow', 'Mahamaya Nagar', 'Mainpuri', 'Mathura', 'Mau', 'Meerut', 'Mirzapur', 'Modinagar', 'Moradabad', 'Muzaffarnagar', 'Nakur', 'Noida', 'Orai', 'Pilibhit', 'Pratapgarh', 'Rae Bareli', 'Rampur', 'Saharanpur', 'Sambhal', 'Sant Ravidas Nagar', 'Shahjahanpur', 'Shikohabad', 'Siddharthnagar', 'Sitapur', 'Sonbhadra', 'Sultanpur', 'Unnao', 'Varanasi'],
+           "Uttarakhand": ['Almora', 'Bageshwar', 'Bhimtal', 'Chamoli', 'Champawat', 'Dehradun', 'Garhwal', 'Haldwani', 'Haridwar', 'Kashipur', 'Kichha', 'Nainital', 'Pantnagar', 'Pithoragarh', 'Rishikesh', 'Roorkee', 'Rudra pur', 'Rudraprayag', 'Srinagar Garhwal', 'Tanakpur', 'Udham Singh Nagar', 'Uttarkashi'],
+           "West Bengal": ['Alipurduar', 'Asansol', 'Baishnabnagar', 'Balurghat', 'Bankura', 'Bardhaman', 'Baruipur', 'Behrampore', 'Belda', 'Birbhum', 'Bishnupur', 'Bolpur Sriniketan', 'Bundwan', 'Burwan', 'Chakdaha', 'Chandannagar', 'Chandrakona', 'Cooch Behar', 'Dakshin Dinajpur', 'Darjeeling', 'Durgapur', 'Gangarampur', 'Haldia', 'Haringhat', 'Hooghly', 'Howrah', 'Jalpaiguri', 'Kadamtala', 'Kalna', 'Kalyani', 'Kharagpur', 'Kolkata', 'Kurseong', 'Malda', 'Manbazar', 'Medinipur', 'Midnapore', 'Mohanpur', 'Murshidabad', 'Nadia', 'Namkhana', 'Neturia', 'North 24 Parganas', 'Paragana', 'Purulia', 'Saltlake', 'Santiniketan', 'Serampore', 'Siliguri', 'South 24 Parganas', 'Uttar Dinajpur']
+         }
+         
+         window.onload = function () {
+           var StateSel = document.getElementById("state");
+           var CitySel = document.getElementById("city");
+           for (var x in States) {
+             StateSel.options[StateSel.options.length] = new Option(x, x);
+           }
+           StateSel.onchange = function () {
+             CitySel.length = 1;
+             var z = States[this.value];
+             for (var i = 0; i < z.length; i++) {
+               CitySel.options[CitySel.options.length] = new Option(z[i], z[i]);
+             }
+           }
+         }
+         
+      </script>
+      <style>
+         .course [type=radio] {
+         position: absolute;
+         opacity: 0;
+         width: 0;
+         height: 0;
+         }
+         /* IMAGE STYLES */
+         .course [type=radio]+img {
+         cursor: pointer;
+         }
+         /* CHECKED STYLES */
+         .course [type=radio]:checked+img {
+         outline: 2px solid #b6bcc2d6;
+         }
+         .survey-img {
+         border-radius: 0.4rem;
+         }
+         .avg-fee {
+         display: grid;
+         grid-template-columns: auto auto;
+         }
+         .entrance-exam {
+         display: grid;
+         grid-template-columns: auto auto auto;
+         }
+         .temp-col {
+         display: grid;
+         grid-template-columns: auto auto auto;
+         }
+         .search-college {
+         display: grid;
+         grid-template-columns: auto auto;
+         }
+         .course-type {
+         display: grid;
+         max-width: 400px;
+         grid-template-columns: auto auto auto;
+         }
+         .type-of-clg {
+         display: grid;
+         max-width: 300px;
+         grid-template-columns: auto auto;
+         }
+         .search-state {
+         display: grid;
+         grid-template-columns: auto auto;
+         }
+         .state-sel {
+         display: grid;
+         grid-template-columns: auto auto;
+         }
+         .city-sel {
+         display: grid;
+         grid-template-columns: auto auto;
+         }
+         .search-find {
+         max-width: 200px;
+         }
+      </style>
+   </head>
+   <body>
+      <!--=============== SVG ===============-->
+      <!--=============== NAV BAR ===============-->
+      <div>
+         <header
+            class="container d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3">
+            <a href="{% url 'home_page' %}"
+               class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none">
+            <img src="{% static '/images/logo_footer.png' %}" height="40" width="140">
+            </a>
+            <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+               <li><a href="{% url 'home_page' %}" class="nav-link px-2 link-secondary font-siz">Home</a></li>
+               <li><a href="{% url 'home_page' %}#about" class="nav-link px-2 link-dark font-siz">About</a></li>
+               <li><a href="{% url 'survey_page' %}" class="nav-link px-2 link-dark font-siz">Survey</a></li>
+               <li><a href="{% url 'analytics_page' %}" class="nav-link px-2 link-dark font-siz">Analytics</a></li>
+               <li><a href="{% url 'home_page' %}#faq" class="nav-link px-2 link-dark font-siz">FAQs</a></li>
+            </ul>
+            <div class="col-md-3 text-end">
+               {% if user.is_authenticated %}
+               <button type="button" class="btn btn-outline-primary me-2"
+                  onclick="window.location.href=`{% url 'logout_page' %}`;">
+               Logout
+               </button>
+               {% else %}
+               <button type="button" class="btn btn-outline-primary me-2"
+                  onclick="window.location.href=`{% url 'login_page' %}`;">
+               Login
+               </button>
+               <button type="button" class="btn btn-outline-primary me-2"
+                  onclick="window.location.href=`{% url 'signup_page' %}`;">
+               Sign-up
+               </button>
+               {% endif%}
+            </div>
+         </header>
+      </div>
+      <main class="container mx-auto mt-4">
+         <!--=============== SURVEY ===============-->
+         <section>
+            <form method="POST" action="{% url 'survey_page' %}">
+               {% csrf_token %}
+               {{ form.path }}
+               <meta charset="utf-8">
+               <meta name="viewport" content="width = device-width, initial-scale = 1, shrink-to-fit = no">
+               <link rel="stylesheet"
+                  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+               <div class="row m-auto">
+                  <div class="col-7 gap-2">
+                     <div class="pb-2 course">
+                        <h5 class="row pb-2">Course</h5>
+                        <div class="row temp-col">
+                           <div class="text-center">
+                              <label class="text-center">
+                              <input type="radio" name="course" value="engineering" checked>
+                              <img class="row survey-img" src="{% static '/images/engineering.png' %}" width="70px"
+                                 height="76.41px">
+                              </label>
+                              <p class="fs-6">Engineering</p>
+                           </div>
+                           <div class="text-center">
+                              <label>
+                              <input type="radio" name="course" value="medical">
+                              <img class="row survey-img text-center" src="{% static '/images/medical.png' %}" width="70px"
+                                 height="76.41px">
+                              </label>
+                              <p class="fs-6">Medical</p>
+                           </div>
+                           <div class="text-center">
+                              <label>
+                              <input type="radio" name="course" value="management">
+                              <img class="row survey-img" src="{% static '/images/management.png' %}" width="70px"
+                                 height="76.41px">
+                              </label>
+                              <p class="fs-6">Management</p>
+                           </div>
+                           <div class="col text-center">
+                              <label>
+                              <input type="radio" name="course" value="design">
+                              <img class="row survey-img" src="{% static '/images/arts.png' %}" width="70px" height="76.41px">
+                              </label>
+                              <p class="fs-6">Design</p>
+                           </div>
+                           <div class="col text-center">
+                              <label>
+                              <input type="radio" name="course" value="science">
+                              <img class="row survey-img" src="{% static '/images/science.png' %}" width="70px" height="76.41px">
+                              </label>
+                              <p class="fs-6">Science</p>
+                           </div>
+                           <div class="col text-center">
+                              <label>
+                              <input type="radio" name="course" value="law">
+                              <img class="row survey-img" src="{% static '/images/law.png' %}" width="70px" height="76.41px">
+                              </label>
+                              <p class="fs-6">Law</p>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="pt-2 mb-2 d-flex gap-3">
+                        <h5 class="row pb-2">Course Duration</h5>
+                        <div class="course-dur"></div>
+                        <select class="fs-6" name="course_duration" id=""
+                           style="width: 150px; border-radius: 60px; height: 30px; padding: 0.25rem;">
+                           <option value="2" class="text-center">2 Years</option>
+                           <option value="3" class="text-center">3 Years</option>
+                           <option value="4" class="text-center">4 Years</option>
+                           <option value="5" class="text-center">5 Years</option>
+                           <option value="6" class="text-center">6 Years</option>
+                           <option value="7" class="text-center">7 Years</option>
+                        </select>
+                     </div>
+                     <div class="pt-2 mb-2 d-flex gap-5">
+                        <h5 class="row pb-2">Program Type</h5>
+                        <select class="fs-6" name="program_type" id=""
+                           style="width: 150px; border-radius: 60px; height: 30px; padding: 0.25rem; margin-left: 2.5px;">
+                           <option value="full-time" class="text-center">Full Time</option>
+                           <option value="part-time" class="text-center">Part Time</option>
+                           <option value="distance" class="text-center">Distance</option>
+                        </select>
+                     </div>
+                  </div>
+                  <div class="col-5">
+                     <div class="pb-2 fs-6">
+                        <h5 class="row type-of-college pt-2 pb-2">Type of College</h5>
+                        <div class="type-of-clg">
+                          <div class="form-check">
+                            <input class="form-check-input" type="radio" name="college_type" value="government" checked>
+                            <label class="form-check-label" for="">
+                            Public
+                            </label>
+                         </div>
+                           <div class="form-check">
+                              <input class="form-check-input" type="radio" name="college_type" value="private">
+                              <label class="form-check-label" for="">
+                              Private
+                              </label>
+                           </div>
+
+                        </div>
+                     </div>
+                     <div class="pt-2 pb-2">
+                        <h5 class="row pb-2">Average Fee Per Year</h5>
+                        <div class="fs-6">
+                           <div class="form-check">
+                              <input class="form-check-input" type="radio" name="avg_fee" value="0" checked>
+                              <label class="form-check-label" for="0">
+                              0 - 25,000
+                              </label>
+                           </div>
+                           <div class="form-check">
+                              <input class="form-check-input d-inline" type="radio" name="avg_fee" value="1">
+                              <label class="form-check-label" for="1">
+                              25,000 - 75,000
+                              </label>
+                           </div>
+                           <div class="form-check">
+                              <input class="form-check-input" type="radio" name="avg_fee" value="2">
+                              <label class="form-check-label" for="2">
+                              75,000 - 1 Lakh
+                              </label>
+                           </div>
+                           <div class="form-check">
+                              <input class="form-check-input" type="radio" name="avg_fee" value="3">
+                              <label class="form-check-label" for="3">
+                              1 Lakh - 2 Lakh
+                              </label>
+                           </div>
+                           <div class="form-check">
+                              <input class="form-check-input" type="radio" name="avg_fee" value="4">
+                              <label class="form-check-label" for="4">
+                              Above 2 Lakh
+                              </label>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="pt-2 pb-2 d-flex gap-4">
+                        <h5 class="row pb-3">Entrance Exams Accepted</h5>
+                        <div class="entrance-exam fs-6">
+                           <div class="state-sel">
+                              <select class="fs-6 text-center" name="exam_accepted" id="exam-accepted" style="width: 150px; border-radius: 60px; height: 30px; padding: 0.25rem;">
+                                 <option value="" class="text-center" selected>Select</option>
+                                 <option value="upcatet" class="text-center engineering">UPCATET</option>
+                                 <option value="hstes" class="text-center engineering">HSTES</option>
+                                 <option value="vsat" class="text-center engineering">VSAT</option>
+                                 <option value="andhra university engineering entrance test" class="text-center engineering">ANDHRA UNIVERSITY ENGINEERING ENTRANCE TEST</option>
+                                 <option value="keam" class="text-center engineering">KEAM</option>
+                                 <option value="itm nest" class="text-center engineering">ITM NEST</option>
+                                 <option value="reap" class="text-center engineering">REAP</option>
+                                 <option value="davuet" class="text-center engineering">DAVUET</option>
+                                 <option value="juee" class="text-center engineering">JUEE</option>
+                                 <option value="viteee" class="text-center engineering">VITEEE</option>
+                                 <option value="mzueee" class="text-center engineering">MZUEEE</option>
+                                 <option value="iuet" class="text-center engineering">IUET</option>
+                                 <option value="hitseee" class="text-center engineering">HITSEEE</option>
+                                 <option value="itsat" class="text-center engineering">ITSAT</option>
+                                 <option value="jkcet" class="text-center engineering">JKCET</option>
+                                 <option value="cieat" class="text-center engineering">CIEAT</option>
+                                 <option value="aaeee" class="text-center engineering">AAEEE</option>
+                                 <option value="tripura jee" class="text-center engineering">TRIPURA JEE</option>
+                                 <option value="jac chandigarh" class="text-center engineering">JAC CHANDIGARH</option>
+                                 <option value="cuee" class="text-center engineering">CUEE</option>
+                                 <option value="mujee" class="text-center engineering">MUJEE</option>
+                                 <option value="chattisgarh pre engineering test" class="text-center engineering">CHATTISGARH PRE ENGINEERING TEST </option>
+                                 <option value="ouat" class="text-center engineering">OUAT</option>
+                                 <option value="bvp cet" class="text-center engineering">BVP CET</option>
+                                 <option value="nerist entrance exam" class="text-center engineering">NERIST ENTRANCE EXAM</option>
+                                 <option value="ipu cet" class="text-center engineering">IPU CET</option>
+                                 <option value="reva eet" class="text-center engineering">REVA EET</option>
+                                 <option value="bitsat" class="text-center engineering">BITSAT</option>
+                                 <option value="ruet" class="text-center engineering">RUET</option>
+                                 <option value="tnea" class="text-center engineering">TNEA</option>
+                                 <option value="gvsat" class="text-center engineering">GVSAT</option>
+                                 <option value="iemjee" class="text-center management">IEMJEE</option>
+                                 <option value="q care" class="text-center engineering">Q CARE</option>
+                                 <option value="glaet" class="text-center engineering">GLAET</option>
+                                 <option value="cmruat" class="text-center engineering">CMRUAT</option>
+                                 <option value="comedk uget" class="text-center engineering">COMEDK UGET</option>
+                                 <option value="met" class="text-center engineering">MET</option>
+                                 <option value="leet" class="text-center engineering">LEET</option>
+                                 <option value="tuee" class="text-center engineering">TUEE</option>
+                                 <option value="srmhcat" class="text-center engineering">SRMHCAT</option>
+                                 <option value="dsat" class="text-center engineering">DSAT</option>
+                                 <option value="imu cet" class="text-center engineering">IMU CET</option>
+                                 <option value="jee advanced" class="text-center engineering">JEE ADVANCED</option>
+                                 <option value="dpu aibtcet" class="text-center engineering">DPU AIBTCET</option>
+                                 <option value="sliet set" class="text-center engineering">SLIET SET</option>
+                                 <option value="apiit nat" class="text-center management">APIIT NAT</option>
+                                 <option value="auat" class="text-center engineering">AUAT</option>
+                                 <option value="jain entrance test" class="text-center management">JAIN ENTRANCE TEST</option>
+                                 <option value="gd goenka scholarship test" class="text-center management">GD GOENKA SCHOLARSHIP TEST </option>
+                                 <option value="upcet" class="text-center management">UPCET</option>
+                                 <option value="ts eamcet" class="text-center engineering">TS EAMCET</option>
+                                 <option value="iiith pgee" class="text-center engineering">IIITH PGEE</option>
+                                 <option value="suat" class="text-center engineering">SUAT</option>
+                                 <option value="beee" class="text-center engineering">BEEE</option>
+                                 <option value="kcet" class="text-center engineering">KCET</option>
+                                 <option value="icar aieea" class="text-center engineering">ICAR AIEEA</option>
+                                 <option value="ap ecet" class="text-center engineering">AP ECET</option>
+                                 <option value="upeseat" class="text-center engineering">UPESEAT</option>
+                                 <option value="set" class="text-center engineering">SET</option>
+                                 <option value="rajasthan jet" class="text-center engineering">RAJASTHAN JET</option>
+                                 <option value="jee main" class="text-center engineering">JEE MAIN</option>
+                                 <option value="centac" class="text-center engineering">CENTAC</option>
+                                 <option value="bptpia cet" class="text-center engineering">BPTPIA CET</option>
+                                 <option value="saeee" class="text-center engineering">SAEEE</option>
+                                 <option value="lpunest" class="text-center engineering">LPUNEST</option>
+                                 <option value="aiseee" class="text-center engineering">AISEEE</option>
+                                 <option value="aeee" class="text-center engineering">AEEE</option>
+                                 <option value="uksee" class="text-center engineering">UKSEE</option>
+                                 <option value="kiitee" class="text-center engineering">KIITEE</option>
+                                 <option value="cusat cat" class="text-center engineering">CUSAT CAT</option>
+                                 <option value="wbjee" class="text-center engineering">WBJEE</option>
+                                 <option value="cuet" class="text-center management">CUET</option>
+                                 <option value="gujcet" class="text-center engineering">GUJCET</option>
+                                 <option value="amity jee" class="text-center engineering">AMITY JEE</option>
+                                 <option value="amueee" class="text-center engineering">AMUEEE</option>
+                                 <option value="ap eapcet" class="text-center engineering">AP EAPCET</option>
+                                 <option value="saat" class="text-center management">SAAT</option>
+                                 <option value="cucet" class="text-center engineering">CUCET</option>
+                                 <option value="ojee" class="text-center engineering">OJEE</option>
+                                 <option value="klueee" class="text-center engineering">KLUEEE</option>
+                                 <option value="spsat" class="text-center management">SPSAT</option>
+                                 <option value="assam cee" class="text-center engineering">ASSAM CEE</option>
+                                 <option value="jcece" class="text-center engineering">JCECE</option>
+                                 <option value="srmjeee" class="text-center engineering">SRMJEEE</option>
+                                 <option value="hpcet" class="text-center engineering">HPCET</option>
+                                 <option value="mht cet" class="text-center engineering">MHT CET</option>
+                                 <option value="gcet" class="text-center engineering">GCET</option>
+                                 <option value="kiitee" class="text-center engineering">KIITEE</option>
+                                 <option value="apiit nat" class="text-center engineering">APIIT NAT</option>
+                                 <option value="cuet" class="text-center engineering">CUET</option>
+                                 <option value="jain entrance test" class="text-center engineering">JAIN ENTRANCE TEST</option>
+                                 <option value="gd goenka scholarship test" class="text-center engineering">GD GOENKA SCHOLARSHIP TEST </option>
+                                 <option value="itm nest" class="text-center management">ITM NEST</option>
+                                 <option value="npat" class="text-center engineering">NPAT</option>
+                                 <option value="upcet" class="text-center engineering">UPCET</option>
+                                 <option value="ipu cet" class="text-center engineering">IPU CET</option>
+                                 <option value="suat" class="text-center engineering">SUAT</option>
+                                 <option value="saat" class="text-center engineering">SAAT</option>
+                                 <option value="fddi aist" class="text-center management">FDDI AIST</option>
+                                 <option value="juee" class="text-center engineering">JUEE</option>
+                                 <option value="iemjee" class="text-center engineering">IEMJEE</option>
+                                 <option value="q care" class="text-center management">Q CARE</option>
+                                 <option value="glaet" class="text-center engineering">GLAET</option>
+                                 <option value="ts dost" class="text-center engineering">TS DOST</option>
+                                 <option value="set" class="text-center engineering">SET</option>
+                                 <option value="du jat" class="text-center management">DU JAT</option>
+                                 <option value="spsat" class="text-center engineering">SPSAT</option>
+                                 <option value="iuet" class="text-center management">IUET</option>
+                                 <option value="srmhcat" class="text-center management">SRMHCAT</option>
+                                 <option value="aima ugat" class="text-center management">AIMA UGAT</option>
+                                 <option value="bumat" class="text-center management">BUMAT</option>
+                                 <option value="jsat" class="text-center management">JSAT</option>
+                                 <option value="jipmer" class="text-center medical">JIPMER</option>
+                                 <option value="neet" class="text-center medical">NEET</option>
+                                 <option value="ipu cet" class="text-center medical management">IPU CET</option>
+                                 <option value="ruet" class="text-center medical">RUET</option>
+                                 <option value="upcet" class="text-center design">UPCET</option>
+                                 <option value="gls institute of design dat" class="text-center design">GLS INSTITUTE OF DESIGN DAT </option>
+                                 <option value="soft cet" class="text-center design">SOFT CET</option>
+                                 <option value="aieed" class="text-center design">AIEED</option>
+                                 <option value="nift" class="text-center design">NIFT</option>
+                                 <option value="kiitee" class="text-center design">KIITEE</option>
+                                 <option value="iiad entrance exam" class="text-center design">IIAD ENTRANCE EXAM</option>
+                                 <option value="upes dat" class="text-center design">UPES DAT</option>
+                                 <option value="iicd" class="text-center design management">IICD</option>
+                                 <option value="suat" class="text-center design">SUAT</option>
+                                 <option value="saeee" class="text-center design">SAEEE</option>
+                                 <option value="lpunest" class="text-center design">LPUNEST</option>
+                                 <option value="cuet" class="text-center design">CUET</option>
+                                 <option value="nid" class="text-center design">NID</option>
+                                 <option value="uceed" class="text-center design">UCEED</option>
+                                 <option value="gd goenka scholarship test" class="text-center design">GD GOENKA SCHOLARSHIP TEST </option>
+                                 <option value="kiitee" class="text-center law">KIITEE</option>
+                                 <option value="cusat cat" class="text-center law">CUSAT CAT</option>
+                                 <option value="muclet" class="text-center law">MUCLET</option>
+                                 <option value="cuet" class="text-center law">CUET</option>
+                                 <option value="du llb" class="text-center law">DU LLB</option>
+                                 <option value="allahabad university lat" class="text-center law">ALLAHABAD UNIVERSITY LAT</option>
+                                 <option value="ts lawcet" class="text-center law">TS LAWCET</option>
+                                 <option value="gd goenka scholarship test" class="text-center law">GD GOENKA SCHOLARSHIP TEST </option>
+                                 <option value="itm nest" class="text-center law">ITM NEST</option>
+                                 <option value="ipu cet" class="text-center law">IPU CET</option>
+                                 <option value="lfat" class="text-center law">LFAT</option>
+                                 <option value="ruet" class="text-center law">RUET</option>
+                                 <option value="suat" class="text-center law">SUAT</option>
+                                 <option value="duet" class="text-center law">DUET</option>
+                                 <option value="juee" class="text-center law">JUEE</option>
+                                 <option value="blat" class="text-center law">BLAT</option>
+                                 <option value="q care" class="text-center law">Q CARE</option>
+                                 <option value="glaet" class="text-center law management">GLAET</option>
+                                 <option value="clat" class="text-center law">CLAT</option>
+                                 <option value="set" class="text-center law management">SET</option>
+                                 <option value="pu llb" class="text-center law">PU LLB</option>
+                                 <option value="ulsat" class="text-center law">ULSAT</option>
+                                 <option value="juet" class="text-center law management">JUET</option>
+                                 <option value="iuet" class="text-center law">IUET</option>
+                                 <option value="srmhcat" class="text-center law">SRMHCAT</option>
+                                 <option value="mgu cat" class="text-center law">MGU CAT</option>
+                                 <option value="klee" class="text-center law">KLEE</option>
+                                 <option value="ailet" class="text-center law">AILET</option>
+                                 <option value="lsat" class="text-center law">LSAT</option>
+                                 <option value="lpunest" class="text-center law">LPUNEST</option>
+                                 <option value="rulet" class="text-center law">RULET</option>
+                                 <option value="mh cet law" class="text-center law">MH CET LAW</option>
+                                 <option value="ap lawcet" class="text-center law">AP LAWCET</option>
+                                 <option value="upcatet" class="text-center science">UPCATET</option>
+                                 <option value="bhu uet" class="text-center science">BHU UET</option>
+                                 <option value="auat" class="text-center science">AUAT</option>
+                                 <option value="cuet" class="text-center science">CUET</option>
+                                 <option value="jain entrance test" class="text-center science">JAIN ENTRANCE TEST</option>
+                                 <option value="iihm echat" class="text-center science">IIHM ECHAT</option>
+                                 <option value="gd goenka scholarship test" class="text-center science">GD GOENKA SCHOLARSHIP TEST
+                                 </option>
+                                 <option value="npat" class="text-center science management">NPAT</option>
+                                 <option value="ts eamcet" class="text-center science">TS EAMCET</option>
+                                 <option value="ipu cet" class="text-center science">IPU CET</option>
+                                 <option value="davuet" class="text-center science">DAVUET</option>
+                                 <option value="ruet" class="text-center science">RUET</option>
+                                 <option value="suat" class="text-center science">SUAT</option>
+                                 <option value="cucet" class="text-center science">CUCET</option>
+                                 <option value="juee" class="text-center science management">JUEE</option>
+                                 <option value="kcet" class="text-center science">KCET</option>
+                                 <option value="q care" class="text-center science">Q CARE</option>
+                                 <option value="nchmct jee" class="text-center science">NCHMCT JEE</option>
+                                 <option value="glaet" class="text-center science">GLAET</option>
+                                 <option value="ts dost" class="text-center science management">TS DOST</option>
+                                 <option value="set" class="text-center science">SET</option>
+                                 <option value="rajasthan jet" class="text-center science">RAJASTHAN JET</option>
+                                 <option value="kleu aiet" class="text-center science">KLEU AIET</option>
+                                 <option value="iuet" class="text-center science">IUET</option>
+                                 <option value="dsat" class="text-center science">DSAT</option>
+                                 <option value="imu cet" class="text-center science">IMU CET</option>
+                                 <option value="lpunest" class="text-center science">LPUNEST</option>
+                                 <option value="jee advanced" class="text-center science">JEE ADVANCED</option>
+                                 <option value="pu cet" class="text-center science">PU CET</option>
+                              </select>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="pt-2 pb-2 ps-0 d-flex gap-3">
+                        <div class="d-flex gap-4 m-0 p-0">
+                           <h5 class="row">State</h5>
+                           <select class="fs-6 text-center" name="state" id="state"
+                              style="width: 150px; border-radius: 60px; height: 30px; padding: 0.25rem;">
+                              <option value="" class="text-center">Select</option>
+                           </select>
+                        </div>
+                        <div class="d-flex gap-3 ">
+                           <h5>City</h5>
+                           <select class="fs-6 text-center" name="city" id="city"
+                              style="width: 150px; border-radius: 60px; height: 30px; padding: 0.25rem;">
+                              <option value="" class="text-center">Select</option>
+                           </select>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="pt-3 pb-1 text-center">
+                     <button type="submit" class="btn btn-primary btn-lg col-3">Find</button>
+                  </div>
+               </div>
+               </div>
+            </form>
+         </section>
+         <!--=============== FOOTER ===============-->
+         <section id="footer">
+            <div class="container">
+               <footer class="row row-cols-1 row-cols-sm-2 row-cols-md-5 py-5 my-5 border-top">
+                  <div class="col mb-3">
+                     <a href="/" class="d-flex align-items-center mb-3 link-dark text-decoration-none">
+                     <img src="{% static '/images/logo_footer.png' %}" height="40" width="140">
+                     </a>
+                     <p>© Copyright notice.</p>
+                  </div>
+                  <div class="col mb-3">
+                  </div>
+                  <div class="col mb-3">
+                     <h5>Engineering</h5>
+                     <ul class="nav flex-column">
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Top Colleges</a></li>
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Popular Courses</a></li>
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">College Predictors</a></li>
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Entrance Exams</a></li>
+                     </ul>
+                  </div>
+                  <div class="col mb-3">
+                     <h5>Medical</h5>
+                     <ul class="nav flex-column">
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Top Colleges</a></li>
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Popular Courses</a></li>
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">College Predictors</a></li>
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Entrance Exams</a></li>
+                     </ul>
+                  </div>
+                  <div class="col mb-3">
+                     <h5>Management</h5>
+                     <ul class="nav flex-column">
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Top Colleges</a></li>
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Popular Courses</a></li>
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">College Predictors</a></li>
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Entrance Exams</a></li>
+                     </ul>
+                  </div>
+               </footer>
+            </div>
+         </section>
+      </main>
+      <script>
+         jQuery(function ($) {
+           $('.course input:radio').change(function () {
+             var val = $('.course input:radio:checked').val();
+             $('#exam-accepted selected').val(0)
+             $('.engineering, .management, .medical, .law, .design, .science').hide();
+             $('.' + val).show();
+           });
+         });
+         
+      </script>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
+         integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
+         crossorigin="anonymous"></script>
+   </body>
+</html>

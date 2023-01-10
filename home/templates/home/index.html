@@ -1,0 +1,467 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+   <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <title>InstiHunt - Know your destination</title>
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet"
+         integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+      <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+      <link rel="icon" href="{% static '/images/hat_icon.png' %}" type='image/gif'>
+      <link href="{% static '/css/styles.css' %}" rel="stylesheet">
+      <style>
+         .accordion-button:not(.collapsed){
+         box-shadow:inset 0 calc(var(--bs-accordion-border-width) * -1) 0 var(--bs-accordion-border-color);
+         }
+         .accordion-button{
+         box-shadow:inset 0 calc(var(--bs-accordion-border-width) * -1) 0 var(--bs-accordion-border-color) !important;
+         }
+      </style>
+      <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+      <script type='text/javascript'>
+         google.charts.load('current', {
+           'packages': ['geochart'],
+           'mapsApiKey': 'AIzaSyD-9tSrke72PouQMnMX-a7eZSW0jkFMBWY'
+         });
+         google.charts.setOnLoadCallback(drawMarkersMap2);
+         
+         function drawMarkersMap2() {
+           var data = google.visualization.arrayToDataTable([
+             ['State Code', 'State', 'Count'],
+             ['IN-WB', 'West Bengal', 660],
+             ['IN-UT', 'Uttarakhand', 363],
+             ['IN-UP', 'Uttar Pradesh', 1601],
+             ['IN-TR', 'Tripura', 28],
+             ['IN-TG', 'Telangana', 496],
+             ['IN-TN', 'Tamil Nadu', 1801],
+             ['IN-SK', 'Sikkim', 32],
+             ['IN-RJ', 'Rajasthan', 675],
+             ['IN-PB', 'Punjab', 613],
+             ['IN-PY', 'Puducherry', 50],
+             ['IN-OR', 'Orissa', 344],
+             ['IN-NL', 'Nagaland', 21],
+             ['IN-MZ', 'Mizoram', 12],
+             ['IN-ML', 'Meghalaya', 41],
+             ['IN-MN', 'Manipur', 30],
+             ['IN-MH', 'Maharashtra', 1651],
+             ['IN-MP', 'Madhya Pradesh', 831],
+             ['IN-KL', 'Kerala', 771],
+             ['IN-KA', 'Karnataka', 1200],
+             ['IN-JH', 'Jharkhand', 178],
+             ['IN-JK', 'Jammu and Kashmir', 84],
+             ['IN-HP', 'Himachal Pradesh', 171],
+             ['IN-HR', 'Haryana', 645],
+             ['IN-GJ', 'Gujarat', 688],
+             ['IN-GA', 'Goa', 39],
+             ['IN-DL', 'Delhi', 47],
+             ['IN-CT', 'Chhattisgarh', 248],
+             ['IN-CH', 'Chandigarh', 91],
+             ['IN-BR', 'Bihar', 293],
+             ['IN-AS', 'Assam', 181],
+             ['IN-AR', 'Arunachal Pradesh', 41],
+             ['IN-AP', 'Andhra Pradesh & Telangana', 917],
+             ['IN-AN', 'Andaman and Nicobar Islands', 6]
+         
+           ]);
+         
+           var options = {
+             region: 'IN',
+             domain: 'IN',
+             displayMode: 'regions',
+             //datalessRegionColor: ,
+             colorAxis: { colors: ['#DDCEFB', '#5e17eb'] },
+             resolution: 'provinces',
+             backgroundColor: 'white',
+             width: 650,
+             height: 400,
+           };
+         
+           var chart = new google.visualization.GeoChart(document.getElementById('india-map'));
+           chart.draw(data, options);
+         };
+      </script>
+   </head>
+   <body>
+      <button type="button" class="btn btn-danger btn-floating btn-lg" id="btn-back-to-top">
+      <i class="fas fa-arrow-up"></i>
+      </button>
+      <!--=============== SVG ===============-->
+      <!--=============== NAV BAR ===============-->
+      <div>
+         <header
+            class="container d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3">
+            <a href="{% url 'home_page' %}"
+               class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none">
+            <img src="{% static '/images/logo_footer.png' %}" height="40" width="140">
+            </a>
+            <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+               <li><a href="{% url 'home_page' %}" class="nav-link px-2 link-secondary font-siz">Home</a></li>
+               <li><a href="{% url 'home_page' %}#about" class="nav-link px-2 link-dark font-siz">About</a></li>
+               <li><a href="{% url 'survey_page' %}" class="nav-link px-2 link-dark font-siz">Survey</a></li>
+               <li><a href="{% url 'analytics_page' %}" class="nav-link px-2 link-dark font-siz">Analytics</a></li>
+               <li><a href="{% url 'home_page' %}#faq" class="nav-link px-2 link-dark font-siz">FAQs</a></li>
+            </ul>
+            <div class="col-md-3 text-end">
+               {% if user.is_authenticated %}
+               <button type="button" class="btn btn-outline-primary me-2"
+                  onclick="window.location.href=`{% url 'logout_page' %}`;">
+               Logout
+               </button>
+               {% else %}
+               <button type="button" class="btn btn-outline-primary me-2"
+                  onclick="window.location.href=`{% url 'login_page' %}`;">
+               Login
+               </button>
+               <button type="button" class="btn btn-outline-primary me-2"
+                  onclick="window.location.href=`{% url 'signup_page' %}`;">
+               Sign-up
+               </button>
+               {% endif%}
+            </div>
+         </header>
+      </div>
+      <main>
+         <!--=============== HOME ===============-->
+         <div id="carouselExampleFade" class="carousel slide carousel-fade container pt-1 pb-5" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+               <button type="button" data-bs-target="#carouselExampleFade" data-bs-slide-to="0" class="active"
+                  aria-current="true" aria-label="Slide 1"></button>
+               <button type="button" data-bs-target="#carouselExampleFade" data-bs-slide-to="1" aria-label="Slide 2"></button>
+               <button type="button" data-bs-target="#carouselExampleFade" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            </div>
+            <div class="carousel-inner">
+               <div class="carousel-item active" data-bs-interval="10000">
+                  <img src="{% static '/images/srm.jpg' %}" class="d-block w-100 car-sl" width="976px" height="650px" alt="...">
+                  <div class="carousel-caption d-none d-md-block">
+                     <h1>Welcome to <span class="font-white fw-semibold">Insti</span><span class="fw-semibold"
+                        style="color: #005cd8;">Hunt</span></h1>
+                     <p class="text-white">Your guide with infinte possibilites</p>
+                  </div>
+               </div>
+               <div class="carousel-item">
+                  <img src="{% static '/images/univ3.jpg' %}" class="d-block w-100 car-sl" height="650px" alt="...">
+                  <div class="carousel-caption d-none d-md-block position-absolute top-0">
+                     <h3>Accomplish your goals in just 3 quick and easy steps!</h3>
+                     <p>1) Get personalized recommendations with just a few clicks! <br>
+                        2) Answer a few questions and let us do the rest! <br>
+                        3) View the results and make your college choice with ease!
+                        and decide
+                     </p>
+                  </div>
+               </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon bg-dark rounded-pill cus" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="next">
+            <span class="carousel-control-next-icon bg-dark rounded-pill cus" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+            </button>
+         </div>
+         <!--=============== ABOUT US ===============-->
+         <section id="about" class="container pt-3">
+            <div class=" w-90 pb-4 ">
+               <h1 class="text-center h2">About Us</h1>
+            </div>
+            <div class="" style="display: grid; grid-template-columns: 60% 40%;">
+               <div>
+                  <div class="aboutus">
+                     <p class="fs-5">
+                        Recommendation systems are enduring software that will always be in demand due to their versatility and
+                        usefulness. They are not only utilized by entertainment and e-commerce sites, but also by educational
+                        platforms to assist with promotions and provide future generations with more informed decisions. A college
+                        recommendation system, for instance, enables students to locate a college that aligns with their interests
+                        and aspirations.
+                     </p>
+                  </div>
+                  <div class="aboutus">
+                     <p class="fs-5">
+                        Get personalized college recommendations using <span class="insti fw-bold">Insti</span><span
+                           class="hunt fw-bold">Hunt</span> in just a few clicks! Our system makes it easy for you to find
+                        the perfect college. All you have to do is answer a few questions about your interests, academic record,
+                        and other relevant information. Then, sit back and let us do the rest. We'll use advanced algorithms to
+                        analyze your data and generate a list of college recommendations that fit your profile. When you're ready,
+                        you can view the results and choose the college that's right for you with ease.
+                     </p>
+                  </div>
+               </div>
+               <div class="text-center">
+                  <img src="{% static '/images/aboutus.png' %}" class="p-2" alt="">
+               </div>
+            </div>
+         </section>
+         <!--=============== SURVEY ===============-->
+         <section id="survey" class="container pt-3 pb-3">
+            <div class="text-center pt-4">
+               <h1 class="h2">Choose your Career Path</h1>
+            </div>
+            <div class="text-center pt-2 pb-2">
+               <p class="text-intro-sur">
+                  Kickstart your career now! Choose the field you're interested in
+               </p>
+            </div>
+            <div class="row overflow-hidden gx-4 pt-4">
+               {% if user.is_authenticated %}
+               <a href="{% url 'engineering' %}" class="col">
+               {% else %}
+               <a href="{% url 'login_page' %}" class="col">
+                  {% endif%}
+                  <div class="p-1 text-center">
+                     <img src="{% static '/images/engineering.png' %}" height="100px" width="100px">
+                     <h2 class="text-center">Engineering</h2>
+                  </div>
+               </a>
+               {% if user.is_authenticated %}
+               <a href="{% url 'medical' %}" class="col">
+               {% else %}
+               <a href="{% url 'login_page' %}" class="col">
+                  {% endif%}
+                  <div class="p-1 text-center">
+                     <img src="{% static '/images/medical.png' %}" height="100px" width="100px">
+                     <h2 class="text-center">Medical</h2>
+                  </div>
+               </a>
+               {% if user.is_authenticated %}
+               <a href="{% url 'management' %}" class="col">
+               {% else %}
+               <a href="{% url 'login_page' %}" class="col">
+                  {% endif%}
+                  <div class="p-1 text-center">
+                     <img src="{% static '/images/management.png' %}" height="100px" width="100px">
+                     <h2 class="text-center">Management</h2>
+                  </div>
+               </a>
+            </div>
+            <div class="row overflow-hidden gx-4 pt-4">
+               {% if user.is_authenticated %}
+               <a href="{% url 'design' %}" class="col">
+               {% else %}
+               <a href="{% url 'login_page' %}" class="col">
+                  {% endif%}
+                  <div class="p-1 text-center">
+                     <img src="{% static '/images/arts.png' %}" height="100px" width="100px">
+                     <h2 class="text-center">Design</h2>
+                  </div>
+               </a>
+               {% if user.is_authenticated %}
+               <a href="{% url 'science' %}" class="col">
+               {% else %}
+               <a href="{% url 'login_page' %}" class="col">
+                  {% endif%}
+                  <div class="p-1 text-center">
+                     <img src="{% static '/images/science.png' %}" height="100px" width="100px">
+                     <h2 class="text-center">Science</h2>
+                  </div>
+               </a>
+               {% if user.is_authenticated %}
+               <a href="{% url 'law' %}" class="col">
+               {% else %}
+               <a href="{% url 'login_page' %}" class="col">
+                  {% endif%}
+                  <div class="p-1 text-center">
+                     <img src="{% static '/images/law.png' %}" height="100px" width="100px">
+                     <h2 class="text-center">Law</h2>
+                  </div>
+               </a>
+            </div>
+            <div class="mt-5 text-center">
+               {% if user.is_authenticated %}
+               <a class="btn btn-primary btn-lg" href="{% url 'survey_page' %}" role="button">Take the Survey</a>
+               {% else %}
+               <a class="btn btn-primary btn-lg" href="{% url 'login_page' %}" role="button">Take the Survey</a>
+               {% endif%}
+            </div>
+         </section>
+         <section class="container text-center pt-3 mt-3 mb-3 mx-auto">
+            <div class=" w-90 pb-2 ">
+               <h1 class="text-center h2">Analytics</h1>
+            </div>
+            <div class="text-center pb-2">
+               <p class="text-intro-sur">
+                  View our analytics page to understand more about the diversity of our data
+               </p>
+            </div>
+            <div class="row mx-auto" style="width: 100%;">
+               <div class="col-7 p-0 m-0">
+                  <div id="india-map" class="p-0 m-0"></div>
+               </div>
+               <div class="col-5 p-0 m-0 ps-3">
+                  <div class="pt-2">
+                     <p class="fs-5" style="text-align: justify;">
+                        Choropleth maps can help visualize the distribution of colleges in India by using colors to represent different ranges of values. These maps provide valuable insights for students and educators interested in the college landscape in India.
+                     </p>
+                  </div>
+                  <div class="" style="padding-left: 50px;">
+                     <table class="table table-borderless" style="width: 350px;">
+                        <tbody>
+                           <tr>
+                              <td>
+                                 <p class="fs-4 fw-semibold fst-italic">15K+ Colleges</p>
+                              </td>
+                              <td><img src="{% static '/images/col-icon.png' %}" height="50px"></td>
+                           </tr>
+                           <tr>
+                              <td>
+                                 <p class="fs-4 fw-semibold fst-italic">6 Domains</p>
+                              </td>
+                              <td><img src="{% static '/images/books.png' %}" height="50px"></td>
+                           </tr>
+                           <tr>
+                              <td>
+                                 <p class="fs-4 fw-semibold pt-2 fst-italic">∞ Possibilites</p>
+                              </td>
+                              <td><img src="{% static '/images/combin.png' %}" height="50px"></td>
+                           </tr>
+                        </tbody>
+                     </table>
+                  </div>
+                  <a class="btn btn-primary btn-lg" href="{% url 'analytics_page' %}" role="button">View Analytics</a>
+               </div>
+            </div>
+         </section>
+         <!--=============== FAQ ===============-->
+         <section id="faq" class="container pt-3">
+            <div class="pt-4 w-90 pb-4">
+               <h1 class="text-center h2">Frequently Asked Questions</h1>
+            </div>
+            <div class="accordion content-font acc-cont" id="accordionExample">
+               <div class="accordion-item">
+                  <h2 class="accordion-header text-dark" id="headingOne">
+                     <button class="accordion-button acc-col" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                     How does InstiHunt work?
+                     </button>
+                  </h2>
+                  <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
+                     data-bs-parent="#accordionExample">
+                     <div class="accordion-body">
+                        <strong>The users are initially requested to login/signup to InstiHunt.</strong> After the signup/login,
+                        the user can go through a survey where he can find directly for a college or go through set of questions
+                        to take a note of his preferences.
+                        <span class="insti fw-bold">Insti</span><span class="hunt fw-bold">Hunt</span>
+                        , tries to provide gem of our services and let the user have a friendly experience.
+                     </div>
+                  </div>
+               </div>
+               <div class="accordion-item">
+                  <h2 class="accordion-header" id="headingTwo">
+                     <button class="accordion-button collapsed acc-col" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                     Do we need to pay to access any of the features of InstiHunt?
+                     </button>
+                  </h2>
+                  <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+                     data-bs-parent="#accordionExample">
+                     <div class="accordion-body">
+                        <strong>No, as of now there is no such feature in the website where the user needs to pay.</strong> <span
+                           class="insti fw-bold">Insti</span><span class="hunt fw-bold">Hunt</span>, tries to provide gem of our
+                        services and let the user have a friendly experience.
+                     </div>
+                  </div>
+               </div>
+               <div class="accordion-item">
+                  <h2 class="accordion-header" id="headingThree">
+                     <button class="accordion-button collapsed acc-col" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                     How to fetch information about the colleges in India among so many options?
+                     </button>
+                  </h2>
+                  <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree"
+                     data-bs-parent="#accordionExample">
+                     <div class="accordion-body">
+                        <strong>The user doesn't need to do anything complex this.</strong>He/She just need to login/signup to
+                        <span class="insti fw-bold">Insti</span><span class="hunt fw-bold">Hunt</span> and then have to go through
+                        a survey where they will be asked few set of questions and will be considered it as preferences.<span
+                           class="insti fw-bold">Insti</span><span class="hunt fw-bold">Hunt</span> will store all the preferences
+                        and recommend colleges according to those preferences.
+                     </div>
+                  </div>
+                  <div class="accordion-item">
+                     <h2 class="accordion-header" id="headingFour">
+                        <button class="accordion-button collapsed acc-col" type="button" data-bs-toggle="collapse"
+                           data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                        How is InstiHunt different and what new does it offer?
+                        </button>
+                     </h2>
+                     <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour"
+                        data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                           <strong>The user can view analytics based on the data collected by <span
+                              class="insti fw-bold">Insti</span><span class="hunt fw-bold">Hunt</span>.</strong> Students can also
+                           analytics of particular institution by searching it's name directly or analytics on the basis of their
+                           preferences.<span class="insti fw-bold">Insti</span><span class="hunt fw-bold">Hunt</span> will
+                           definitely help you finding best college for you.
+                        </div>
+                     </div>
+                     <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingFive">
+                           <button class="accordion-button collapsed acc-col" type="button" data-bs-toggle="collapse"
+                              data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                           How to contact for help if any queries arise?
+                           </button>
+                        </h2>
+                        <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive"
+                           data-bs-parent="#accordionExample">
+                           <div class="accordion-body">
+                              The user can contact us to solve their queries, by emailing us at
+                              <strong>codegenix@gmail.com</strong>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </section>
+         <!--=============== FOOTER ===============-->
+         <section id="footer">
+            <div class="container">
+               <footer class="row row-cols-1 row-cols-sm-2 row-cols-md-5 py-5 my-5 border-top">
+                  <div class="col mb-3 text-center">
+                     <a href="/" class="d-flex align-items-center mb-3 link-dark text-decoration-none">
+                     <img src="{% static '/images/logo_footer.png' %}" height="40" width="140">
+                     </a>
+                     <p style="padding-right: 85px;">© Copyright notice.</p>
+                  </div>
+                  <div class="col mb-3">
+                  </div>
+                  <div class="col mb-3">
+                     <h5>Engineering</h5>
+                     <ul class="nav flex-column">
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Top Colleges</a></li>
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Popular Courses</a></li>
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">College Predictors</a></li>
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Entrance Exams</a></li>
+                     </ul>
+                  </div>
+                  <div class="col mb-3">
+                     <h5>Medical</h5>
+                     <ul class="nav flex-column">
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Top Colleges</a></li>
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Popular Courses</a></li>
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">College Predictors</a></li>
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Entrance Exams</a></li>
+                     </ul>
+                  </div>
+                  <div class="col mb-3">
+                     <h5>Management</h5>
+                     <ul class="nav flex-column">
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Top Colleges</a></li>
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Popular Courses</a></li>
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">College Predictors</a></li>
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Entrance Exams</a></li>
+                     </ul>
+                  </div>
+               </footer>
+            </div>
+         </section>
+      </main>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
+         integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
+         crossorigin="anonymous"></script>
+      <script>
+         document.body.style.zoom = "95%";
+      </script>
+   </body>
+</html>
