@@ -71,27 +71,37 @@
       <!--=============== FINAL RESULTS ===============-->
       <section class="container pt-4">
 
-         <!--<div>
-            {% for college_name, col in colleges.items %}
+         {% if img %}
 
-            <li>
+         <div class="container p-0 m-0">
 
-               <ul>{{college_name}}</ul>
-               <ul>{{ college_features.city }}</ul>
-               <ul>{{ college_features.state }}</ul>
-               <ul>{{ college_features.rating }}</ul>
-               <ul>{{ college_features.logo }}</ul>
-               <ul>{{ college_features.exam }}</ul>
-               <ul>{{ college_features.cover }}</ul>
-               <ul>{{ college_features.facilities }}</ul>
-               <ul>{{ college_features.fees }}</ul>
-               <ul>{{ college_features.type }}</ul>
-               <ul>{{ college_features.program }}</ul>
+            <div class="mx-auto pt-2 m-0 text-center" style="width: 90%;">
 
-            </li>
+               {% if img == 1 %}
 
-            {% endfor %}
-         </div>-->
+               <img src="{% static '/images/404.jpeg' %}" width="900px" height="600px" alt="">
+
+               {% elif img == 2 %}
+               <img src="{% static '/images/405.jpg' %}" width="900px" height="600px">
+
+               {% elif img == 3 %}
+               <img src="{% static '/images/406.jpg' %}" width="900px" height="600px">
+
+               {% elif img == 4 %}
+               <img src="{% static '/images/407.jpg' %}" width="900px" height="600px" alt="">
+
+               {% elif img == 5 %}
+               <img src="{% static '/images/408.jpg' %}" width="900px" height="600px" alt="">
+
+               {% endif %}
+
+            </div>
+
+         </div>
+
+
+
+         {% endif %}
 
          {% for college_name, college in colleges.items %}
 
