@@ -1,6 +1,6 @@
 # InstiHunt
 
-<strong> InstiHunt </strong> is a personalised college recommendation system which helps you in finding a college of your choice.
+<strong> InstiHunt </strong> is a personalised college recommendation system where students can enter the details asked and get recommendations of finest colleges from all over India.
 <hr>
 Features provided by InstiHunt : 
 <ol>
