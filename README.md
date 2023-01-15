@@ -9,3 +9,6 @@ Features provided by InstiHunt :
   <li>View Analytics of different states across India for data like number of colleges, fees range, entrance exam accepted.
 </ol>
 
+<h1 align='center'> UI Images of the Website </h1>
+
+<img src='UI Images/analytics-80-zoom.png'>
