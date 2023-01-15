@@ -6,7 +6,7 @@ import ast
 import difflib
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
-from django.template import context
+from django.template import context, loader
 import csv
 from urllib.parse import urlencode
 from django.shortcuts import redirect, render
@@ -14,6 +14,8 @@ from .forms import SurveyForm
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate
+from googlesearch import search
+import random
 
 # Create your views here.
 
@@ -242,51 +244,6 @@ def similarity(request, params):
         return []
 
 
-def results(request):
-    survey_opt = dict()
-    survey_opt["course"] = str(request.GET.get("course"))
-    survey_opt["state"] = str(request.GET.get("state"))
-    survey_opt["city"] = str(request.GET.get("city"))
-    survey_opt["exam_accepted"] = str(request.GET.get("exam_accepted"))
-    survey_opt["avg_fee"] = str(request.GET.get("avg_fee"))
-    survey_opt["college_type"] = str(request.GET.get("college_type"))
-    survey_opt["program_type"] = str(request.GET.get("program_type"))
-    survey_opt["course_duration"] = str(request.GET.get("course_duration"))
-    data = similarity("", params=survey_opt)
-    values = list()
-    check_duplicate=list()
-    try:
-        for ind in data.index:
-            list1 = list()
-            if(data["College Name"][ind] in check_duplicate):
-                continue
-            else:
-                check_duplicate.append(data["College Name"][ind])
-            list1.append(data["College Name"][ind])
-            list1.append(data["City"][ind])
-            list1.append(data["State"][ind])
-            if len(ast.literal_eval(data["Approvals"][ind])) > 0:
-                list1.append(ast.literal_eval(data["Approvals"][ind])[0])
-            else:
-                list1.append("Not Updated")
-            list1.append(data["Rating"][ind])
-            list1.append(data["Logo"][ind])
-            list1.append(data["Cover"][ind])
-            if len(ast.literal_eval(data["Ranking Data"][ind])) > 0:
-                list1.append(ast.literal_eval(data["Ranking Data"][ind]))
-            else:
-                list1.append("Not Updated")
-            list1.append(data["Exam"][ind])
-            list1.append(data["Facilities"][ind])
-            list1.append(data["Fees"][ind])
-            list1.append(data["Type"][ind])
-            list1.append(data["Program"][ind])
-            values.append(list1)
-        return JsonResponse(values, safe=False)
-    except:
-        return JsonResponse([], safe=False)
-
-
 def results_page(request):
     survey_opt = dict()
     survey_opt["course"] = str(request.GET.get("course"))
@@ -297,7 +254,84 @@ def results_page(request):
     survey_opt["college_type"] = str(request.GET.get("college_type"))
     survey_opt["program_type"] = str(request.GET.get("program_type"))
     survey_opt["course_duration"] = str(request.GET.get("course_duration"))
-    return render(request, "home/result.html", survey_opt)
+
+    data = similarity("", params=survey_opt)
+    values = list()
+    check_duplicate=list()
+    
+    results_colleges = dict()
+
+    print(type(data))
+
+    emptyranking = ""
+    try:
+        for ind in data.index:
+            list1 = list()
+            if(data["College Name"][ind] in check_duplicate):
+                continue
+            else:
+                check_duplicate.append(data["College Name"][ind])           
+            list1.append(data["College Name"][ind])
+            list1.append(data["City"][ind])
+            list1.append(data["State"][ind])
+            if len(ast.literal_eval(data["Approvals"][ind])) > 0:
+                list1.append(ast.literal_eval(data["Approvals"][ind])[0])
+                approval = ast.literal_eval(data["Approvals"][ind])[0]
+
+            else:
+                approval = "Not Updated"
+                list1.append("Not Updated")
+            list1.append(data["Rating"][ind])
+            list1.append(data["Logo"][ind])
+            list1.append(data["Cover"][ind])
+            if len(ast.literal_eval(data["Ranking Data"][ind])) > 0:
+                list1.append(ast.literal_eval(data["Ranking Data"][ind]))
+                ranking = ast.literal_eval(data["Ranking Data"][ind])[0]
+            else:
+                list1.append("Not Updated")
+                emptyranking = "Not Updated"
+            list1.append(data["Exam"][ind])
+            list1.append(data["Facilities"][ind])
+            list1.append(data["Fees"][ind])
+            list1.append(data["Type"][ind])
+            list1.append(data["Program"][ind])
+            values.append(list1)
+
+            results_colleges[data["College Name"][ind]]={
+            "city": data["City"][ind],
+            "state": data["State"][ind],
+            "rating": round(float(data["Rating"][ind]), 2),
+            "logo": data["Logo"][ind],
+            "exam": data["Exam"][ind].upper(),
+            "cover": data["Cover"][ind],
+            "facilities": data["Facilities"][ind],
+            "fees" : data["Fees"][ind],
+            "type" : data["Type"][ind],
+            "program" : data["Program"][ind],
+            "approvals" : approval,
+            "agency" : ranking['agency'],
+            "year" : ranking['year'],
+            "totalcol" : ranking['rankingOutOfTotalNoOfCollege'],
+            "ranking" : ranking['rankingOfCollege'],
+            "emprank" : emptyranking,
+            "clglink" : list(search(str(data["College Name"][ind]+" "+data["City"][ind]+" "+data["State"][ind]), tld="co.in", num=1, stop=1, pause=0.05))[0] 
+            }    
+
+        context = {
+        "colleges" : results_colleges
+        }
+
+        #print(context)
+
+        return render(request, "home/result.html", context)
+    
+    except:
+
+        image_error = random.randint(1,5)
+
+        return render(request, "home/result.html", context = {
+            "img" : image_error
+        })
 
 
 # Create your views here.

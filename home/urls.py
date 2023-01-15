@@ -5,7 +5,6 @@ urlpatterns = [
     path('', views.home_page,name='home_page'),
     path('analytics_page/',views.analytics_page,name="analytics_page"),
     path('survey/', views.survey, name="survey_page"),
-    path('results/',views.results,name="results"),
     path('results_page/',views.results_page,name="results_page"),
     path('engineering/',views.engineering,name="engineering"),
     path('medical/',views.medical,name="medical"),

@@ -1,76 +1,188 @@
 {% load static %}
 <!doctype html>
 <html lang="en">
-   <head>
-      <meta charset="utf-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1">
-      <title>InstiHunt - Know your Institution</title>
-      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet"
-         integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
-      <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
-      <link rel="icon" href="{% static '/images/hat_icon.png' %}" type='image/gif'>
-      <link href="{% static '/css/styles.css' %}" rel="stylesheet">
-      <style>
-         .main-div {
+
+<head>
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <title>InstiHunt - Know your Institution</title>
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet"
+      integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+   <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+   <link rel="icon" href="{% static '/images/hat_icon.png' %}" type='image/gif'>
+   <link href="{% static '/css/styles.css' %}" rel="stylesheet">
+   <style>
+      .main-div {
          display: grid;
          grid-template-columns: 70% 30%;
          grid-gap: 10px;
-         }
-         .sec-div {
+      }
+
+      .sec-div {
          display: grid;
          grid-template-columns: auto auto auto;
-         }
-         .third-div {
+      }
+
+      .third-div {
          display: grid;
          grid-template-columns: auto auto;
-         }
-      </style>
-   </head>
-   <body>
-      <!--=============== SVG ===============-->
-      <!--=============== NAV BAR ===============-->
-      <div>
-         <header
-            class="container d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3">
-            <a href="{% url 'home_page' %}"
-               class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none">
+      }
+   </style>
+</head>
+
+<body>
+   <!--=============== SVG ===============-->
+   <!--=============== NAV BAR ===============-->
+   <div>
+      <header
+         class="container d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3">
+         <a href="{% url 'home_page' %}"
+            class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none">
             <img src="{% static '/images/logo_footer.png' %}" height="40" width="140">
-            </a>
-            <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-               <li><a href="{% url 'home_page' %}" class="nav-link px-2 link-secondary font-siz">Home</a></li>
-               <li><a href="{% url 'home_page' %}#about.html" class="nav-link px-2 link-dark font-siz">About</a></li>
-               <li><a href="{% url 'survey_page' %}" class="nav-link px-2 link-dark font-siz">Survey</a></li>
-               <li><a href="{% url 'analytics_page' %}" class="nav-link px-2 link-dark font-siz">Analytics</a></li>
-               <li><a href="{% url 'home_page' %}#faq" class="nav-link px-2 link-dark font-siz">FAQs</a></li>
-               
-            </ul>
-            <div class="col-md-3 text-end">
-               {% if user.is_authenticated %}
-               <button type="button" class="btn btn-outline-primary me-2"
-                  onclick="window.location.href=`{% url 'logout_page' %}`;">
+         </a>
+         <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+            <li><a href="{% url 'home_page' %}" class="nav-link px-2 link-secondary font-siz">Home</a></li>
+            <li><a href="{% url 'home_page' %}#about.html" class="nav-link px-2 link-dark font-siz">About</a></li>
+            <li><a href="{% url 'survey_page' %}" class="nav-link px-2 link-dark font-siz">Survey</a></li>
+            <li><a href="{% url 'analytics_page' %}" class="nav-link px-2 link-dark font-siz">Analytics</a></li>
+            <li><a href="{% url 'home_page' %}#faq" class="nav-link px-2 link-dark font-siz">FAQs</a></li>
+
+         </ul>
+         <div class="col-md-3 text-end">
+            {% if user.is_authenticated %}
+            <button type="button" class="btn btn-outline-primary me-2"
+               onclick="window.location.href=`{% url 'logout_page' %}`;">
                Logout
-               </button>
-               {% else %}
-               <button type="button" class="btn btn-outline-primary me-2"
-                  onclick="window.location.href=`{% url 'login_page' %}`;">
+            </button>
+            {% else %}
+            <button type="button" class="btn btn-outline-primary me-2"
+               onclick="window.location.href=`{% url 'login_page' %}`;">
                Login
-               </button>
-               <button type="button" class="btn btn-outline-primary me-2"
-                  onclick="window.location.href=`{% url 'signup_page' %}`;">
+            </button>
+            <button type="button" class="btn btn-outline-primary me-2"
+               onclick="window.location.href=`{% url 'signup_page' %}`;">
                Sign-up
-               </button>
-               {% endif%}
+            </button>
+            {% endif%}
+         </div>
+      </header>
+   </div>
+   <main class="container">
+      <!--=============== FINAL RESULTS ===============-->
+      <section class="container pt-4">
+
+         {% if img %}
+
+         <div class="container p-0 m-0">
+
+            <div class="mx-auto pt-2 m-0 text-center" style="width: 90%;">
+
+               {% if img == 1 %}
+
+               <img src="{% static '/images/404.jpeg' %}" width="900px" height="600px" alt="">
+
+               {% elif img == 2 %}
+               <img src="{% static '/images/405.jpg' %}" width="900px" height="600px">
+
+               {% elif img == 3 %}
+               <img src="{% static '/images/406.jpg' %}" width="900px" height="600px">
+
+               {% elif img == 4 %}
+               <img src="{% static '/images/407.jpg' %}" width="900px" height="600px" alt="">
+
+               {% elif img == 5 %}
+               <img src="{% static '/images/408.jpg' %}" width="900px" height="600px" alt="">
+
+               {% endif %}
+
             </div>
-         </header>
-      </div>
-      <main class="container">
-         <!--=============== FINAL RESULTS ===============-->
-         <section class="container pt-4">
-         </section>
-      </main>
-      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
-         integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
-         crossorigin="anonymous"></script>
+
+         </div>
+
+
+
+         {% endif %}
+
+         {% for college_name, college in colleges.items %}
+
+         <div class="border rounded p-3 mb-2 mx-auto" style="max-width: 90%;">
+
+            <div class="main-div mb-3">
+
+               <div class="">
+
+                  <div class="third-div d-flex align-items-center">
+
+                     <img src="{{ college.logo }}" width="62.5px" height="62.5px" class="pe-2">
+
+
+                     <a href="{{ college.clglink }}" target="_blank">
+                        <p class="fs-3 ">{{ college_name }}</p>
+                     </a>
+
+                  </div>
+
+                  <div class="d-flex justify-content-between px-1">
+
+                     <p class="fs-5 ">{{ college.city }}, {{ college.state }}</p>
+
+                     <p class="fs-5"><span class="">Exam: </span>{{ college.exam }}</p>
+
+                     <p class="fs-5"><span class="">Rating: </span><button type="button"
+                           class="btn btn-sm btn-success">{{ college.rating }}</button></p>
+
+                  </div>
+
+                  <div class="d-flex justify-content-between px-1">
+
+                     <p class="fs-5"><span class="">Avg Fee: </span>{{ college.fees }}</p>
+
+                     <p class="fs-5">College Type: {{ college.type }}</p>
+
+                     <p class="fs-5">Program Type : {{ college.program }}</p>
+
+
+                  </div>
+
+                  <div class="third-div">
+
+                     <p class="fs-5 ">Approval : {{ college.approvals }}</p>
+
+                     {% if empranking == 'Not Updated' %}
+
+                     <p class="fs-5">Not Updated</p>
+
+                     {% else %}
+
+                     <p class="fs-5"><span class="">{{ college.agency }}</span> Ranking: <span class="">
+                           {{college.ranking }}</span> / {{ college.totalcol }} <span class="">
+                           [{{college.year}}]</span></p>
+
+                     {% endif %}
+
+                  </div>
+
+
+               </div>
+
+               <img src="{{ college.cover }}" width="260px" height="200px" class="border border-dark">
+
+            </div>
+
+         </div>
+
+         {% endfor %}
+
+      </section>
+   </main>
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
+      crossorigin="anonymous"></script>
+
+   <script>
+      document.body.style.zoom = "95%";
+   </script>
+   <!--
       <script>
          document.body.style.zoom="95%";
          //<section class="container pt-4">
@@ -264,6 +376,7 @@
          }
          })    
          
-      </script>
-   </body>
+      </script>-->
+</body>
+
 </html>
