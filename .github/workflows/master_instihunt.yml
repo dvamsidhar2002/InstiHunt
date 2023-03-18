@@ -60,4 +60,4 @@ jobs:
         with:
           app-name: 'InstiHunt'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_DB497FB01AEF4CA1B0FF8C1726753A1C }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_96C828CA5F094E9EB204EB0C679D0D14 }}
