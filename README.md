@@ -1,4 +1,4 @@
-# InstiHunt
+# InstiHunt - College Recommendation System using feature extraction
 
 <strong> InstiHunt </strong> is a personalised college recommendation system where students can enter the details asked and get recommendations of finest colleges from all over India.
 <hr>
